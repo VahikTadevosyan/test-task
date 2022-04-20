@@ -3,7 +3,7 @@ import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import 'antd/dist/antd.css'
 import {Input, Popconfirm, Table, Typography} from "antd";
-import {useState} from "react";
+import React, {useState, } from "react";
 import {SearchOutlined} from "@ant-design/icons";
 
 
@@ -12,7 +12,10 @@ type User = {
     name: string;
     age: number;
     address: string;
+    phone: string;
 }
+
+type DataIndex = 'name' | 'age' | 'address' | 'phone' | undefined
 
 const data = [
     {
@@ -20,24 +23,28 @@ const data = [
         name: 'John Brown',
         age: 32,
         address: 'New York No. 1 Lake Park',
+        phone: '5465456564645'
     },
     {
         key: '2',
         name: 'Joe Black',
         age: 42,
         address: 'London No. 1 Lake Park',
+        phone: '5465456564645'
     },
     {
         key: '3',
         name: 'Jim Green',
         age: 32,
         address: 'Sidney No. 1 Lake Park',
+        phone: '5465456564645'
     },
     {
         key: '4',
         name: 'Jim Red',
         age: 32,
         address: 'London No. 2 Lake Park',
+        phone: '5465456564645'
     },
 ];
 
@@ -48,17 +55,30 @@ const Home: NextPage = () => {
     const [value, setValue] = useState('');
     const {Title} = Typography
 
-    const handleSearch = (dataIndex: 'name' | 'age') => {
-        const filteredData = data.filter(entry => {
-                const col = entry[dataIndex].toString()
-                return col.toLowerCase().includes(value.toLowerCase())
+    const handleSearch = (dataIndex: DataIndex) => {
+        const filteredData = data.filter((entry: User) => {
+               if (dataIndex) {
+                   const col = entry[dataIndex].toString()
+                   return col.toLowerCase().includes(value.toLowerCase())
+               }
             }
         );
         setDataSource(filteredData);
     }
 
+    const handleKeydown = (e: React.KeyboardEvent<HTMLInputElement>, dataIndex: DataIndex) => {
+        if (e.key === 'Enter') {
+            handleSearch(dataIndex)
+        }
+    }
 
-    const FilterByNameInput = (column: string, dataIndex: 'name' | 'age') => (
+    const handleReset = (dataIndex: DataIndex) => {
+        setValue('')
+        handleSearch(dataIndex)
+    }
+
+
+    const FilterByNameInput = (column: string, dataIndex: DataIndex) => (
         <>
             <div style={{display: "flex", alignItems: 'center', justifyContent: "space-between"}}>
                 <Title level={5}>{column}:</Title>
@@ -67,11 +87,13 @@ const Home: NextPage = () => {
                         placeholder="Search Name"
                         value={value}
                         onChange={(e) => setValue(e.target.value)}
-                        onKeyDown={(e) => e.keyCode === 13 && handleSearch(dataIndex)}
+                        onKeyDown={(e)=>handleKeydown(e,dataIndex)}
                     />}
-                    onConfirm={(e) => handleSearch(dataIndex)}
+                    icon={false}
+                    onConfirm={() => handleSearch(dataIndex)}
                     okText="Search"
-                    showCancel={false}
+                    cancelText='Reset'
+                    onCancel={()=>handleReset(dataIndex)}
 
                 >
                     <SearchOutlined/>
@@ -89,13 +111,18 @@ const Home: NextPage = () => {
             width: 250
         },
         {
-            title: 'Age',
+            title: FilterByNameInput('Age', 'age'),
             dataIndex: 'age',
             width: 250
         },
         {
-            title: 'Address',
+            title: FilterByNameInput('Address', 'address'),
             dataIndex: 'address',
+            width: 250
+        },
+        {
+            title: FilterByNameInput('Phone', 'phone'),
+            dataIndex: 'phone',
             width: 250
         },
     ];
