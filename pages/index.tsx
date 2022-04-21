@@ -3,9 +3,11 @@ import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import 'antd/dist/antd.css'
 import {Input, Popconfirm, Table, Typography} from "antd";
-import React, {useState, } from "react";
-import {EditOutlined, SearchOutlined} from "@ant-design/icons";
+import React, {useState} from "react";
+import {SearchOutlined} from "@ant-design/icons";
 import {UserModal} from "../components/UserModal";
+import {UserForm} from "../components/UserForm";
+import axios from "axios";
 
 export type User = {
     id: string;
@@ -48,7 +50,18 @@ const data = [
     },
 ];
 
-const Home: NextPage = () => {
+export async function getServerSideProps() {
+    const {data} = await axios.get('https://jsonplaceholder.typicode.com/users')
+    return {
+        props: {
+            userList: data
+        },
+    }
+}
+
+const Home: NextPage = (userList) => {
+
+    console.log(userList, 'test')
     const [dataSource, setDataSource] = useState(data);
     const [value, setValue] = useState('');
     const {Title} = Typography
@@ -59,7 +72,7 @@ const Home: NextPage = () => {
     }
 
     const handleSearch = (dataIndex: DataIndex) => {
-        const filteredData = data.filter((entry: User) => {
+        const filteredData = dataSource.filter((entry: User) => {
                if (dataIndex) {
                    const col = entry[dataIndex].toString()
                    return col.toLowerCase().includes(value.toLowerCase())
@@ -124,8 +137,10 @@ const Home: NextPage = () => {
             width: 80,
             render: (key: string, item: User) => {
                return (
-                   <div style={{display: 'flex', justifyContent: "center"}}>
-                       <UserModal user={item}/>
+                   <div key={item.id} style={{display: 'flex', justifyContent: "center"}}>
+                       <UserModal>
+                           <UserForm user={item}/>
+                       </UserModal>
                    </div>
                )
             }

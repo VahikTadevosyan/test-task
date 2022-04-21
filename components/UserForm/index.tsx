@@ -1,29 +1,24 @@
 import { Form, Input, Button, Checkbox } from 'antd';
+import {User} from "../../pages";
 
-export const UserForm = () => {
-    const onFinish = (values: any) => {
+export const UserForm = ({user}:{user: User}) => {
+    const onFinish = (values: User) => {
         console.log('Success:', values);
     };
-
-    const onFinishFailed = (errorInfo: any) => {
-        console.log('Failed:', errorInfo);
-    };
-
+    console.log(user, "test")
     return (
         <Form
-            name="user-form"
-
-            initialValues={{ remember: true }}
+            // name="user"
             onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
             autoComplete="off"
             layout={"vertical"}
+            initialValues={user}
         >
             <Form.Item
                 label="Name"
                 name="name"
             >
-                <Input />
+                <Input  />
             </Form.Item>
             <Form.Item
                 label="Age"
@@ -38,10 +33,10 @@ export const UserForm = () => {
                 <Input />
             </Form.Item>
             <Form.Item
-                label="Number"
-                name="number"
+                label="Phone"
+                name="phone"
             >
-                <Input />
+                <Input  />
             </Form.Item>
             <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
                 <Button type="primary" htmlType="submit">

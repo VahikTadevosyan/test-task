@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
-import { Button, Modal } from 'antd';
-import {UserForm} from "../UserForm";
+import React, {ReactNode, useState} from 'react';
+import { Modal } from 'antd';
 import {EditOutlined} from "@ant-design/icons";
-import {User} from "../../pages";
 
-export const UserModal = ({user}:{user: User}) => {
+export const UserModal = ({children}:{children: ReactNode}) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
 
     const showModal = () => {
@@ -23,7 +21,7 @@ export const UserModal = ({user}:{user: User}) => {
         <>
             <EditOutlined onClick={showModal}/>
             <Modal title="Basic Modal" visible={isModalVisible} footer={false} onCancel={handleCancel} >
-                <UserForm/>
+                {children}
             </Modal>
         </>
     );
