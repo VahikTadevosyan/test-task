@@ -16,7 +16,7 @@ export const UserModal = ({children}:{children: ReactNode}) => {
     return (
         <>
             <EditOutlined onClick={showModal}/>
-            <Modal title="Basic Modal" visible={isModalVisible} footer={false} onCancel={handleCancel} >
+            <Modal title="User" visible={isModalVisible} footer={false} onCancel={handleCancel} >
                 {children}
             </Modal>
         </>
