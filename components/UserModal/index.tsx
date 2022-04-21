@@ -9,10 +9,6 @@ export const UserModal = ({children}:{children: ReactNode}) => {
       return   setIsModalVisible(true);
     };
 
-    const handleOk = () => {
-      return   setIsModalVisible(false);
-    };
-
     const handleCancel = () => {
       return   setIsModalVisible(false);
     };

@@ -1,14 +1,14 @@
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button } from 'antd';
 import {User} from "../../pages";
 
-export const UserForm = ({user}:{user: User}) => {
+export const UserForm = ({user, update}:{user: User, update: (data:User, val: Partial<User>)=>void}) => {
     const onFinish = (values: User) => {
-        console.log('Success:', values);
+        update(user, values)
     };
-    console.log(user, "test")
+
     return (
         <Form
-            // name="user"
+            name="user"
             onFinish={onFinish}
             autoComplete="off"
             layout={"vertical"}
