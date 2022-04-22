@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import 'antd/dist/antd.css'
-import {Button, Input, Popconfirm, Table, Typography} from "antd";
+import { Input, Popconfirm, Table, Typography} from "antd";
 import React from "react";
 import {DeleteOutlined, SearchOutlined} from "@ant-design/icons";
 import {UserModal} from "../components/UserModal";
@@ -9,6 +9,7 @@ import {UserForm} from "../components/UserForm";
 import axios from "axios";
 import useUser from "../hooks/use-user";
 import Link from 'next/link'
+import { Breakpoint } from 'antd/lib/_util/responsiveObserve';
 
 type Address = {
     city?: string;
@@ -75,25 +76,28 @@ const Home = ({data}: { data: User[] }) => {
         {
             title: FilterByNameInput('Name', 'name'),
             dataIndex: 'name',
-            width: 250,
             render: (key: any, item: User) => (
-                <Link href={`/${item.id}`}>{item.name}</Link>
+                <div style={{minWidth: 250}}>
+                    <Link href={`/${item.id}`}>{item.name}</Link>
+                </div>
             )
         },
         {
             title: FilterByNameInput('Email', 'email'),
             dataIndex: 'email',
-            width: 250
-        },
-        {
-            title: FilterByNameInput('Address', 'address'),
-            dataIndex: 'address',
             width: 250,
+            responsive: ['md'] as Breakpoint[],
         },
         {
             title: FilterByNameInput('Phone', 'phone'),
             dataIndex: 'phone',
-            width: 250
+            width: 250,
+            responsive: ['lg'] as Breakpoint[],
+        },
+        {
+            title: FilterByNameInput('Address', 'address'),
+            dataIndex: 'address',
+            responsive: ['xl'] as Breakpoint[],
         },
         {
             title: (
