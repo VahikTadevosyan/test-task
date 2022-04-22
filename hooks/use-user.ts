@@ -30,14 +30,25 @@ const useUser = (initialUsers: User[]) => {
         }
     }
 
-    const handleEdit = (user: any, values:any) =>{
+    const handleAdd = (data: User) => {
+        data.id = `${users.length+1}`
+        setUsers((users)=> [ data, ...users,])
+    }
+
+    const handleDelete = (userId: string) => {
+       setUsers((users)=>
+           users.filter((item)=> item.id !== userId)
+       )
+    }
+
+    const handleEdit = (user: User, values: Partial<User>) =>{
         const updatedUser = {...user, ...values}
         setUsers((users)=>
             users.map((item)=> item.id === user.id? {...item, ...updatedUser} : item)
         )
     }
 
-    return {users, value,setValue, handleReset, handleSearch, handleKeydown, handleEdit}
+    return {users, value,setValue, handleReset, handleSearch, handleKeydown, handleEdit, handleDelete, handleAdd}
 }
 
 export default useUser;

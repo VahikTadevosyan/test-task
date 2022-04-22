@@ -1,8 +1,8 @@
 import React, {ReactNode, useState} from 'react';
-import { Modal } from 'antd';
+import {Button, Modal} from 'antd';
 import {EditOutlined} from "@ant-design/icons";
 
-export const UserModal = ({children}:{children: ReactNode}) => {
+export const UserModal = ({children, isAdd}:{children: ReactNode, isAdd?: boolean}) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
 
     const showModal = () => {
@@ -15,10 +15,10 @@ export const UserModal = ({children}:{children: ReactNode}) => {
 
     return (
         <>
-            <EditOutlined onClick={showModal}/>
+            {isAdd? <Button onClick={showModal} block>+Add</Button> :<EditOutlined onClick={showModal}/>}
             <Modal title="User" visible={isModalVisible} footer={false} onCancel={handleCancel} >
                 {children}
             </Modal>
         </>
     );
-};
+}

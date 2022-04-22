@@ -1,9 +1,21 @@
 import { Form, Input, Button } from 'antd';
 import {User} from "../../pages";
+import {FC} from "react";
 
-export const UserForm = ({user, update}:{user: User, update: (data:User, val: Partial<User>)=>void}) => {
+type UserFormProps = {
+    user?: User;
+    update?: (data:User, val: Partial<User>)=>void;
+    add?: (data: User)=>void;
+}
+
+export const UserForm: FC<UserFormProps> = ({user, update, add}) => {
     const onFinish = (values: User) => {
-        update(user, values)
+        if (update && user) {
+            update(user, values)
+        }
+        if (add) {
+            add(values)
+        }
     };
 
     return (
@@ -21,8 +33,8 @@ export const UserForm = ({user, update}:{user: User, update: (data:User, val: Pa
                 <Input  />
             </Form.Item>
             <Form.Item
-                label="Age"
-                name="age"
+                label="Email"
+                name="email"
             >
                 <Input />
             </Form.Item>
@@ -40,7 +52,7 @@ export const UserForm = ({user, update}:{user: User, update: (data:User, val: Pa
             </Form.Item>
             <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
                 <Button type="primary" htmlType="submit">
-                    Submit
+                    {update ? 'Save' : 'Add'}
                 </Button>
             </Form.Item>
         </Form>
